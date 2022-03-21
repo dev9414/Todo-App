@@ -4,6 +4,7 @@ const Todo_model=require('../models/todo')
 
 router.post('/add/todo',(req,res)=>{
     const {todo}=req.body;
+    console.log(todo);
     const {email_}=req.user.email;
     const newTodo=new Todo_model({todo,email_:req.user.email,done:"0"})
     if(todo==""){
@@ -27,16 +28,32 @@ router.post('/add/todo',(req,res)=>{
     .catch((err)=>console.log(err));
 })
 
-.get("/update/todo/:_id",(req,res)=>{
+.get("/done/todo/:_id",(req,res)=>{
     const {_id}=req.params;
     const info=Todo_model.find();
     console.log(info)
     Todo_model.updateOne({_id}, { done:"1"})
     .then(()=>{
-        console.log("deleted")
+        console.log("Done")
         res.redirect('/')
     })
     .catch((err)=>console.log(err));
-});
+})
+
+.get("/update/todo/:_id",(req,res)=>{
+    const {_id}=req.params;
+    const info=Todo_model.find();
+    console.log(info)
+    Todo_model.updateOne({_id}, { todo:req.body })
+    console.log("op",req.body)
+    .then(()=>{
+        console.log("Updated")
+        res.redirect('/')
+    })
+    .catch((err)=>console.log(err));
+})
+
+
+;
 
 module.exports=router;

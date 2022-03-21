@@ -11,19 +11,15 @@ const MongoStore = require('connect-mongo')(session)
 var app=express();
 const PORT = process.env.PORT||3000;
 dotenv.config({ path: './config/config.env' })
-// Connect to mongodb
-// mongoose.connect("mongodb://localhost/todo_list",{
+
 mongoose.connect(process.env.MONGO_URI,{
     useNewUrlParser:true,
     useUnifiedTopology: true
 })
 
-// Passport config
 require('./config/passport')(passport)
 
 
-
-// Middleware
 app.use(express.urlencoded({extended:true}))
 app.use(express.static('public'))
 
@@ -38,7 +34,6 @@ app.use(
     })
   )
 
-  // Passport middleware
 app.use(passport.initialize())
 app.use(passport.session())
 
@@ -48,7 +43,4 @@ app.use('/auth', require('./routes/auth'))
 app.use(require("./routes/todo"))
 
 
-
-
-// app.listen(3000, '192.168.101.9');
 app.listen(PORT,console.log(`listening at ${PORT}`))
