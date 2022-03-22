@@ -40,12 +40,15 @@ router.post('/add/todo',(req,res)=>{
     .catch((err)=>console.log(err));
 })
 
-.get("/update/todo/:_id",(req,res)=>{
+.post("/update/todo/:_id",(req,res)=>{
     const {_id}=req.params;
     const info=Todo_model.find();
-    console.log(info)
-    Todo_model.updateOne({_id}, { todo:req.body })
-    console.log("op",req.body)
+    var doneval;
+    if(req.body.done)
+        doneval="1"
+    else
+        doneval="0"
+    Todo_model.updateOne({_id}, { todo:req.body.todo,done:doneval })
     .then(()=>{
         console.log("Updated")
         res.redirect('/')
